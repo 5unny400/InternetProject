@@ -49,7 +49,7 @@ public class Server {
             //关闭资源
             socket.close();
             serverSocket.close();
-
+            outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

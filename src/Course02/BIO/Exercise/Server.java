@@ -1,6 +1,8 @@
 package Course02.BIO.Exercise;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -41,14 +43,22 @@ class Test implements Runnable{
     @Override
     public void run() {
         try {
-            Scanner scan = new Scanner(socket.getInputStream());
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             OutputStream outputStream = socket.getOutputStream();
-            while(scan.hasNext()){
-                String s = scan.nextLine();
-                System.out.println("接收到客户端信息："+s);
-                outputStream.write(("服务端已收到收到"+s).getBytes());
-                outputStream.close();
+            String msg = reader.readLine();
+            while ((msg != null) && ! "exit".equals(msg)) {
+
+                System.out.println("接收到客户端数据："+msg);
+                //将数据回写给客户端
+                String info = "服务端已收到:"+msg+"\n";
+                outputStream.write(info.getBytes());
+
+                //重复接收客户端消息
+                msg = reader.readLine();
             }
+
+            outputStream.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
