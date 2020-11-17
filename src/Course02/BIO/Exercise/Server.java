@@ -8,7 +8,6 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
-import java.util.Scanner;
 
 public class Server {
     public static void main(String[] args) throws IOException {
@@ -19,14 +18,12 @@ public class Server {
 
         Socket socket = null;
         int i =0;
-        while(i++ <= 5) {
-            System.out.println("客户端"+ i +"连接！");
+        while(++i <= 4) {
             socket = serverSocket.accept();
             SocketAddress socketAddress = socket.getRemoteSocketAddress();
             System.out.println("客户端："+i+"连接成功："+socketAddress);
+
             new Thread(new Test(socket)).start();
-            System.out.println("=======================================");
-            System.out.println("=======================================");
         }
 
     }
@@ -46,18 +43,25 @@ class Test implements Runnable{
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             OutputStream outputStream = socket.getOutputStream();
             String msg = reader.readLine();
-            while ((msg != null) && ! "exit".equals(msg)) {
+            while (msg != null) {
 
                 System.out.println("接收到客户端数据："+msg);
                 //将数据回写给客户端
                 String info = "服务端已收到:"+msg+"\n";
                 outputStream.write(info.getBytes());
 
+                if (msg.equals("exit"))
+                {
+                    System.out.println(socket.getRemoteSocketAddress()+"断开连接！");
+                    break;
+                }
                 //重复接收客户端消息
                 msg = reader.readLine();
             }
-
             outputStream.close();
+
+            System.out.println("=======================================");
+            System.out.println("=======================================");
 
         } catch (IOException e) {
             e.printStackTrace();
