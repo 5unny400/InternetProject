@@ -54,7 +54,7 @@ public class Client {
                 //将数据写入到Buffer中
                 buffer.put((msg+"\n").getBytes());
                 //读写模式切换
-                buffer.flip();
+                buffer.flip();//之后读取buffer
 
                 //将数据从 Buffer中写入channel通道，对于Buffer而言，是读取数据
                 socketChannel.write(buffer);
@@ -75,7 +75,7 @@ public class Client {
                         channel.read(allocate);
 
                         //读写模式切换
-                        allocate.flip();
+                        allocate.flip();//之后要从buffer读取
 
                         //remaining 实际读取的数据长度
                         byte[] bytes = new byte[allocate.remaining()];

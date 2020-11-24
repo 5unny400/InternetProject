@@ -74,7 +74,7 @@ public class Server {
                                 continue;
                             }
                             //进行读写模式的切换
-                            buffer.flip();
+                            buffer.flip();//读取buffer
 
                             byte[] bytes = new byte[buffer.remaining()];
                             //读取buff数据
@@ -95,8 +95,8 @@ public class Server {
                             buffer.put(recv.getBytes());
 
                             //读写模式切换
-                            buffer.flip();
-                            //将Buffer数据读到channel通道
+                            buffer.flip();//读取buffer
+                            //将Buffer数据读到channel通道，
                             socketChannel.write(buffer);
 
                             //业务断开
