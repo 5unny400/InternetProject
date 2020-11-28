@@ -40,6 +40,7 @@ public class NIOServer {
                     SelectionKey selectionKey = iterator.next();
                     //删除掉已经完成的事件
                     iterator.remove();
+                    if(!selectionKey.isValid()) continue;
                     if (selectionKey.isAcceptable()) {
                         //当前是可接收事件已经准备就绪
                         ServerSocketChannel serverSocketChannel1 = (ServerSocketChannel) selectionKey.channel();

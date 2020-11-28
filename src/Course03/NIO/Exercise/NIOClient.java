@@ -13,7 +13,7 @@ public class NIOClient {
     private Selector selector = null;
     private SocketChannel socketChannel;
 
-    private void startClient(){
+    void startClient(){
         try {
             //创建SocketChannel通道
             socketChannel = SocketChannel.open();
@@ -102,9 +102,6 @@ public class NIOClient {
         }
     }
 
-    public static void main(String[] args) {
-        NIOClient nioClient = new NIOClient();
-        nioClient.startClient();
-    }
+
 
 }

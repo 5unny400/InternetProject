@@ -11,16 +11,24 @@ import java.util.Set;
 public class NIOServerMsgChild implements Runnable {
     private Selector selector;
     //SocketChannel socketChannel;
+    ByteBuffer buffer;
 
-    public NIOServerMsgChild(SocketChannel socketChannel) throws IOException {
+    public NIOServerMsgChild(SocketChannel socketChannel){
         //  this.socketChannel = socketChannel;
 
-        socketChannel.configureBlocking(false);
+        try {
+            socketChannel.configureBlocking(false);
+            //创建selector复用器
+            selector = Selector.open();
 
-        //创建selector复用器
-        selector = Selector.open();
-        //将SocketChannel注册到复用器上，并关注读事件
-        socketChannel.register(selector, SelectionKey.OP_READ);
+
+            //将SocketChannel注册到复用器上，并关注读事件
+            socketChannel.register(selector, SelectionKey.OP_READ);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        buffer = ByteBuffer.allocate(1024);
     }
 
     @Override
@@ -37,12 +45,14 @@ public class NIOServerMsgChild implements Runnable {
                     //删除掉已经完成的事件
                     iterator.remove();
 
+                    if(!selectionKey.isValid()) continue;
+
                     if (selectionKey.isReadable()) {
                         //当前有可读事件发生
                         SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
 
                         //读数据 堆上创建指定大小的缓冲
-                        ByteBuffer buffer = ByteBuffer.allocate(1024);
+                        buffer.clear();
                         //往Buffer中写数据
                         int read = socketChannel.read(buffer);
                         if (read == -1) {
