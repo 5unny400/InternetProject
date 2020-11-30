@@ -14,8 +14,7 @@ public class Server {
 
     public static void main(String[] args) {
         //创建服务端ServerSocketChannel实例
-        ServerSocketChannel serverSocketChannel;
-        {
+        ServerSocketChannel serverSocketChannel;{
             try {
                 serverSocketChannel = ServerSocketChannel.open();
 

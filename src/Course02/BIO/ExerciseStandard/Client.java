@@ -12,9 +12,8 @@ public class Client {
         Socket socket = new Socket();
         System.out.println("客户端已创建！");
 
-        Scanner scan = new Scanner(System.in);
-
         socket.connect(new InetSocketAddress("127.0.0.1", 9999));
+        System.out.println("连接服务器成功！");
 
         OutputStream outputStream = socket.getOutputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -22,12 +21,14 @@ public class Client {
 
         String msg;
         System.out.print("请输入消息：");
+        Scanner scan = new Scanner(System.in);
         while (scan.hasNext()) {
 
             msg = scan.nextLine();
 
             System.out.println("发送的消息：" + msg);
             outputStream.write((msg + "\n").getBytes());
+
             String recv = reader.readLine();
             System.out.println(recv);
 

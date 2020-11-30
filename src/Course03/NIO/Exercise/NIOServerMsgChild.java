@@ -6,6 +6,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.Set;
 
 public class NIOServerMsgChild implements Runnable {
@@ -20,7 +21,6 @@ public class NIOServerMsgChild implements Runnable {
             socketChannel.configureBlocking(false);
             //创建selector复用器
             selector = Selector.open();
-
 
             //将SocketChannel注册到复用器上，并关注读事件
             socketChannel.register(selector, SelectionKey.OP_READ);
@@ -69,10 +69,16 @@ public class NIOServerMsgChild implements Runnable {
                         //转为String类型
                         String msg = new String(bytes);
 
-                        System.out.println("客户端：" + socketChannel.getRemoteAddress() + " 发送数据" + msg);
+                        System.out.println("客户端：" + socketChannel.getRemoteAddress() + " 发送数据:" + msg);
 
                         //返回信息，表示服务端收到
-                        String recv = "[echo]:" + msg;
+                        //String recv = "[echo]:" + msg;
+                        Scanner  scanner = new Scanner(System.in);
+                        String recv = scanner.nextLine();
+                        recv = "B:"+recv;
+
+
+
                         //先将Buffer清空
                         buffer.clear();
                         //往Buffer写数据

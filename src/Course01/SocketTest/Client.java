@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Client {
     /*
@@ -23,7 +24,12 @@ public class Client {
         socket.connect(new InetSocketAddress("127.0.0.1",6666));
         System.out.println("连接服务器成功！");
 
-        String s = "你好！";
+        //String s = "你好！";
+        Scanner scan = new Scanner(System.in);
+        String s = scan.nextLine();
+
+
+
         //进行IO操作
         OutputStream outputStream = socket.getOutputStream();
         outputStream.write(s.getBytes());

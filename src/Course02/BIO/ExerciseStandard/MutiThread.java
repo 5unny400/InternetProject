@@ -24,9 +24,14 @@ public class MutiThread implements Runnable{
 
             while((msg = bufferedReader.readLine())!= null){
                 System.out.println("线程："+   Thread.currentThread()+"接收客户端"+socket.getRemoteSocketAddress()+"消息:"+msg);
+
                 String rec = "[echo]"+msg+"\n";
                 outputStream.write(rec.getBytes());
-                if(msg.equals("exit")) break;
+
+                if(msg.equals("exit")) {
+                    System.out.println("++++++++++++++++++++");
+                    break;
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -13,7 +13,7 @@ public class NIOServer {
     private ServerSocketChannel serverSocketChannel;
     private Selector selector;
 
-    private void startServer(){
+    public void startServer(){
         try {
             serverSocketChannel = ServerSocketChannel.open();
 
