@@ -66,7 +66,7 @@ public class Server {
                 allocate.get(bytes);
                 //转换信息为String
                 String recv = new String(bytes, StandardCharsets.UTF_8);
-                System.out.println(tmp.getRemoteAddress() +"客户端:"+recv.trim());
+                System.out.println(tmp.getRemoteAddress() +"客户端:"+recv);
                 //向其他 客户端 转发消息
                 sendToToClient(recv, tmp);
             }

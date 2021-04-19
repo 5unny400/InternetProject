@@ -1,10 +1,12 @@
 package 聊天TCP;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Scanner;
 public class Client {
@@ -14,7 +16,7 @@ public class Client {
     private SocketChannel socketChannel;
     //客户端名称
     private String userName;
-    //构造函数出实话
+    //构造函数初始化
     private Client() {
         try {
             //实例化复用器
@@ -39,8 +41,9 @@ public class Client {
         }
     }
     //发送消息
-    private void sendInfo(String str) {
+    private void sendInfo(String str) throws UnsupportedEncodingException {
         String info = userName + "说:" + str;
+        info = new String(info.getBytes(), StandardCharsets.UTF_8);
         try {
             socketChannel.write(ByteBuffer.wrap(info.getBytes()));
         } catch (IOException e) {
@@ -75,7 +78,7 @@ public class Client {
                     //将Buffer数据读到byte数组中
                     buffer.get(bytes);
 
-                    String recv = new String(bytes);
+                    String recv = new String(bytes,StandardCharsets.UTF_8);
                     System.out.println(recv.trim());
                 }
             }
@@ -84,21 +87,19 @@ public class Client {
         }
     }
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws UnsupportedEncodingException {
         Client client = new Client();
 
-        new Thread() {
-            public void run() {
-                while (true) {
-                    client.readInfo();
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        new Thread(() -> {
+            while (true) {
+                client.readInfo();
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-        }.start();
+        }).start();
         Scanner scanner = new Scanner(System.in);
         String s;
         do{
